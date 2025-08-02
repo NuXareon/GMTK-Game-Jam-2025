@@ -46,6 +46,7 @@ public class CongaManager : MonoBehaviour
                 }
                 ChildFollowerMovement.Following = prevChild;
                 ChildFollowerMovement.Spacing = FollowerSpacing;
+                ChildFollowerMovement.IsJoiningConga = false;
                 if (LeaderSpeed.HasValue)
                 {
                     ChildFollowerMovement.Speed = LeaderSpeed.Value + AdditionalFollowerSpeed;

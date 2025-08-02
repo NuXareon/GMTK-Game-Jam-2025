@@ -404,7 +404,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: e1f81907b89bb624ba07c244d260bb0a, type: 2}
+      objectReference: {fileID: 9100000, guid: 0f2ce76f96995374f9b0b42fe1976571, type: 2}
     - target: {fileID: 5866666021909216657, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
@@ -905,7 +905,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: e1f81907b89bb624ba07c244d260bb0a, type: 2}
+      objectReference: {fileID: 9100000, guid: 0f2ce76f96995374f9b0b42fe1976571, type: 2}
     - target: {fileID: 5866666021909216657, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0

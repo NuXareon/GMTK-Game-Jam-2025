@@ -12,22 +12,24 @@ public class CongaFollowerMovement : MonoBehaviour
     public float Speed = 5;
     [HideInInspector]
     public float Spacing = 1f;
+    [HideInInspector]
+    public bool IsJoiningConga = true;
 
     private Vector3? Target;
+    private Animator Anim;
     private CharacterController Controller;
     private float Gravity = 9.81f;
-    public bool IsJoiningConga = false;
 
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
+        Anim = GetComponent<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Don't Start the movement here, we want to give the breadcrum a chance to initialize itself first
-        IsJoiningConga = true;
     }
 
     // Update is called once per frame
@@ -38,6 +40,8 @@ public class CongaFollowerMovement : MonoBehaviour
             UpdateTargetPosition();
         }
         MoveTowardsTarget();
+
+        UpdateAnimation();
 
         // Apply gravity (tecnically should be an acceleration, but this is enough to keep our conga in the ground)
         Controller.Move(Vector3.down * Gravity * Time.deltaTime);
@@ -120,6 +124,20 @@ public class CongaFollowerMovement : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    void UpdateAnimation()
+    {
+        if (Following != null)
+        {
+            Anim.SetBool("JoiningConga", IsJoiningConga);
+            Anim.SetBool("InConga", !IsJoiningConga);
+        }
+        else
+        {
+            Anim.SetBool("JoiningConga", false);
+            Anim.SetBool("InConga", false);
         }
     }
 }

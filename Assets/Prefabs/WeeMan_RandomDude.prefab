@@ -238,7 +238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       propertyPath: m_Name
-      value: WeeMan (3)
+      value: WeeMan_RandomDude
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       propertyPath: m_Layer
@@ -498,7 +498,7 @@ MonoBehaviour:
   Following: {fileID: 0}
   Speed: 5
   Spacing: 0.75
-  IsJoiningConga: 0
+  IsJoiningConga: 1
 --- !u!114 &3296176286415380464
 MonoBehaviour:
   m_ObjectHideFlags: 0
