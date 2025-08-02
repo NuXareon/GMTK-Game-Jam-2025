@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class CongaFollowerMovement : MonoBehaviour
 {
+    // Additional radius used for detecting when conga leader has collected this object
+    public float TriggerEndAdditionalRadius = 0.3f;
+
     [HideInInspector]
     public Transform Following;
     [HideInInspector]
@@ -12,15 +15,41 @@ public class CongaFollowerMovement : MonoBehaviour
     public bool IsJoiningConga = true;
     [HideInInspector]
     public Vector3? Target;
+    [HideInInspector]
+    public FollowerTriggerLogic TriggerLogic;
 
     private Animator Anim;
     private CharacterController Controller;
     private float Gravity = 9.81f;
-
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
         Anim = GetComponent<Animator>();
+
+        if (transform.Find("LastMemberCollisionTrigger") == null)
+        {
+            // Last Member trigger
+            GameObject triggerObj = new GameObject("LastMemberCollisionTrigger");
+            triggerObj.transform.SetParent(transform);
+            triggerObj.transform.localPosition = Vector3.zero;
+            triggerObj.transform.localRotation = Quaternion.identity;
+            triggerObj.layer = gameObject.layer;
+
+            CharacterController controller = GetComponent<CharacterController>();
+            CapsuleCollider capsule = triggerObj.AddComponent<CapsuleCollider>();
+            capsule.center = controller.center;
+            capsule.radius = controller.radius + TriggerEndAdditionalRadius;
+            capsule.height = controller.height;
+            capsule.direction = 1;
+            capsule.isTrigger = true;
+
+            Rigidbody rb = triggerObj.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity = false;
+
+            TriggerLogic = triggerObj.AddComponent<FollowerTriggerLogic>();
+            TriggerLogic.enabled = false;
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -110,13 +139,19 @@ public class CongaFollowerMovement : MonoBehaviour
                     if (IsJoiningConga)
                     {
                         IsJoiningConga = false;
-                        GameObject Conga = GameObject.FindGameObjectWithTag("GameController");
-                        Transform Leader = Conga.GetComponent<CongaManager>().GetLeader();
+                        GameObject CongaObj = GameObject.FindGameObjectWithTag("GameController");
+                        CongaManager Conga = CongaObj.GetComponent<CongaManager>();
+                        Transform Leader = Conga.GetLeader();
                         Physics.IgnoreCollision(Leader.GetComponent<CharacterController>(), Controller, false);
                         BreadcrumTrail Trail = Following.GetComponent<BreadcrumTrail>();
                         if (Trail != null)
                         {
                             Trail.RemoveOldBreadcrums(transform.position);
+                        }
+                        Following.GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = false;
+                        if (Conga.GetLast() == transform)
+                        {
+                            TriggerLogic.enabled = true;
                         }
                     }
                 }
@@ -128,8 +163,11 @@ public class CongaFollowerMovement : MonoBehaviour
     {
         if (Following != null)
         {
-            Anim.SetBool("JoiningConga", IsJoiningConga);
-            Anim.SetBool("InConga", !IsJoiningConga);
+            if (!GetComponent<CongaLeaderMovement>())
+            {
+                Anim.SetBool("JoiningConga", IsJoiningConga);
+                Anim.SetBool("InConga", !IsJoiningConga);
+            }
         }
         else
         {

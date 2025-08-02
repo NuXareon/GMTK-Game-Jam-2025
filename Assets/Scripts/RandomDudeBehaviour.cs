@@ -4,37 +4,36 @@ using UnityEngine.InputSystem.XR;
 public class RandomDudeBehaviour : MonoBehaviour
 {
     // Additional radius used for detecting when conga leader has collected this object
-    public float TriggerAdditionalRadius = 1.0f;
+    public float TriggerPickupAdditionalRadius = 1.0f;
 
     private RandomDudeTriggerLogic TriggerLogic;
 
     private void Awake()
     {
         // Set up triggers
-        if (transform.Find("CollisionTrigger") != null)
+        if (transform.Find("PickUpCollisionTrigger") == null)
         {
-            return;
+            // Pick up trigger
+            GameObject triggerObj = new GameObject("PickUpCollisionTrigger");
+            triggerObj.transform.SetParent(transform);
+            triggerObj.transform.localPosition = Vector3.zero;
+            triggerObj.transform.localRotation = Quaternion.identity;
+            triggerObj.layer = gameObject.layer;
+
+            CharacterController controller = GetComponent<CharacterController>();
+            CapsuleCollider capsule = triggerObj.AddComponent<CapsuleCollider>();
+            capsule.center = controller.center;
+            capsule.radius = controller.radius + TriggerPickupAdditionalRadius;
+            capsule.height = controller.height;
+            capsule.direction = 1;
+            capsule.isTrigger = true;
+
+            Rigidbody rb = triggerObj.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity = false;
+
+            TriggerLogic = triggerObj.AddComponent<RandomDudeTriggerLogic>();
         }
-
-        GameObject triggerObj = new GameObject("CollisionTrigger");
-        triggerObj.transform.SetParent(transform);
-        triggerObj.transform.localPosition = Vector3.zero;
-        triggerObj.transform.localRotation = Quaternion.identity;
-        triggerObj.layer = gameObject.layer;
-
-        CharacterController controller = GetComponent<CharacterController>();
-        CapsuleCollider capsule = triggerObj.AddComponent<CapsuleCollider>();
-        capsule.center = controller.center;
-        capsule.radius = controller.radius + TriggerAdditionalRadius;
-        capsule.height = controller.height;
-        capsule.direction = 1;
-        capsule.isTrigger = true;
-
-        Rigidbody rb = triggerObj.AddComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.useGravity = false;
-
-        TriggerLogic = triggerObj.AddComponent<RandomDudeTriggerLogic>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

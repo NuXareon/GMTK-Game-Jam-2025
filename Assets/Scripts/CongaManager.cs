@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class CongaManager : MonoBehaviour
 {
     public float AdditionalFollowerSpeed = 1.0f;
-    public float FollowerSpacing= 1.0f;
+    public float FollowerSpacing = 1.0f;
     public int FollowersReleasedOnCollision = 1;
     public List<Transform> Members = new List<Transform>();
 
@@ -33,8 +34,14 @@ public class CongaManager : MonoBehaviour
         Transform prevChild = null;
         foreach (Transform child in transform)
         {
+            CongaLeaderMovement ChildLeaderMovement = child.GetComponent<CongaLeaderMovement>();
             CongaFollowerMovement ChildFollowerMovement = child.GetComponent<CongaFollowerMovement>();
-            if (ChildFollowerMovement != null)
+            if (ChildLeaderMovement)
+            {
+                LeaderSpeed = ChildLeaderMovement.Speed;
+                LeaderController = child.GetComponent<CharacterController>();
+            }
+            else if (ChildFollowerMovement)
             {
                 if (prevChild == null)
                 {
@@ -43,6 +50,7 @@ public class CongaManager : MonoBehaviour
                 ChildFollowerMovement.Following = prevChild;
                 ChildFollowerMovement.Spacing = FollowerSpacing;
                 ChildFollowerMovement.IsJoiningConga = false;
+                ChildFollowerMovement.TriggerLogic.enabled = false;
                 if (LeaderSpeed.HasValue)
                 {
                     ChildFollowerMovement.Speed = LeaderSpeed.Value + AdditionalFollowerSpeed;
@@ -51,30 +59,24 @@ public class CongaManager : MonoBehaviour
                 {
                     Debug.LogError("Failed to assign speed to member: " + child.name);
                 }
-                if (LeaderController != null) 
+                if (LeaderController != null)
                 {
                     // Disable collision with leader for the initial conga. Should only be really needed for the second conga member.
                     CharacterController myController = child.GetComponent<CharacterController>();
                     Physics.IgnoreCollision(LeaderController, myController);
-                } 
-            }
-            else
-            {
-                CongaLeaderMovement ChildLeaderMovement = child.GetComponent<CongaLeaderMovement>();
-                if (ChildLeaderMovement)
-                {
-                    LeaderSpeed = ChildLeaderMovement.Speed;
-                    LeaderController = child.GetComponent<CharacterController>();
                 }
             }
             prevChild = child;
         }
+
+        Members.First().GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = false;
+        Members.Last().GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AddMember(Transform NewMember)
@@ -88,7 +90,7 @@ public class CongaManager : MonoBehaviour
 
         if (NewMemberFollowerMovement.enabled)
         {
-            Debug.LogWarning("Trying to add new memember (" + NewMember.name + ") to conga which alreadt has Follower Movement Component enabled. Skipping.");
+            Debug.LogWarning("Trying to add new memember (" + NewMember.name + ") to conga which already has Follower Movement Component enabled. Skipping.");
             return;
         }
 
@@ -106,7 +108,16 @@ public class CongaManager : MonoBehaviour
         NewMemberFollowerMovement.enabled = true;
 
         RandomDudeBehaviour NewMemberRandomDudeBehaviour = NewMember.GetComponent<RandomDudeBehaviour>();
-        NewMemberRandomDudeBehaviour.enabled = false;
+        if (NewMemberRandomDudeBehaviour)
+        {
+            NewMemberRandomDudeBehaviour.enabled = false;
+        }
+
+        CongaLeaderMovement NewMemberLeaderMovement = NewMember.GetComponent<CongaLeaderMovement>();
+        if (NewMemberLeaderMovement)
+        {
+            NewMemberLeaderMovement.enabled = false;
+        }
 
         // Ignore collisions while joining the conga
         Physics.IgnoreCollision(Leader.GetComponent<CharacterController>(), NewMember.GetComponent<CharacterController>());
@@ -131,6 +142,11 @@ public class CongaManager : MonoBehaviour
         return Members.First();
     }
 
+    public Transform GetLast()
+    {
+        return Members.Last();
+    }
+
     private void ReleaseLastMember()
     {
         Transform CurrentLast = Members.Last();
@@ -146,6 +162,8 @@ public class CongaManager : MonoBehaviour
         CurrentLast.gameObject.layer = RandomDudeCollisionLayer;
 
         CongaFollowerMovement CurrentLastMemberFollowerMovement = CurrentLast.GetComponent<CongaFollowerMovement>();
+        CurrentLastMemberFollowerMovement.TriggerLogic.enabled = false;
+        CurrentLastMemberFollowerMovement.Following.GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = true;
         CurrentLastMemberFollowerMovement.Following = null;
         CurrentLastMemberFollowerMovement.Target = null;
         CurrentLastMemberFollowerMovement.IsJoiningConga = true;
@@ -155,5 +173,26 @@ public class CongaManager : MonoBehaviour
         CurrentLastRandomDudeBehaviour.enabled = true;
 
         Members.Remove(CurrentLast);
+    }
+
+    public void OnCongaLoop()
+    {
+        Transform Leader = GetLeader();
+        CongaLeaderMovement LeaderMovement = Leader.GetComponent<CongaLeaderMovement>();
+        if (LeaderMovement.PostCollisionTime > 0f)
+        {
+            // Mo winning while invulnerable
+            return;
+        }
+        // TODO proper game end
+        Debug.Log("Conga Loop!");
+        AddMember(GetLeader());
+        CongaFollowerMovement LeaderFollowerMovement = Leader.GetComponent<CongaFollowerMovement>();
+        // Do a bit of conga
+        LeaderFollowerMovement.Speed = LeaderMovement.Speed/2f;
+        LeaderFollowerMovement.Spacing = 0.1f;
+        LeaderFollowerMovement.IsJoiningConga = false;
+
+        FindFirstObjectByType<LevelFlow>().FinishLevel();
     }
 }

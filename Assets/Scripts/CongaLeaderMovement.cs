@@ -9,9 +9,11 @@ public class CongaLeaderMovement : MonoBehaviour
     public float HeadOnCollisionAngleFollower = 45f;
     public float CollisionInvulnerabilityTime = 2f;
 
+    [HideInInspector]
+    public float PostCollisionTime = 0f;
+
     private float Gravity = 9.81f;
     private float CollisionTime = 0f;
-    private float PostCollisionTime = 0f;
 
     private InputSystem_Actions InputActions;
     private CharacterController Controller;
@@ -79,8 +81,6 @@ public class CongaLeaderMovement : MonoBehaviour
         // Detect if the movement hit something
         if ((flags & CollisionFlags.Sides) != 0 && PostCollisionTime == 0f)
         {
-            //Debug.Log("Side or front collision detected");
-
             Vector3 origin = transform.position + Vector3.up * (Controller.height / 2f);
             Vector3 direction = transform.forward;
             float RaycastLength = 1.0f;
@@ -93,7 +93,6 @@ public class CongaLeaderMovement : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<CongaFollowerMovement>() != null)
                 {
                     CollisionAngle = HeadOnCollisionAngleFollower;
-                    // TODO check if it's last. If it is, we win!
                 }
 
                 // Collision - check angle for heads-on collision

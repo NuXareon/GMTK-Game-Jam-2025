@@ -480,8 +480,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayBreadcrumDebug: 0
-  MaxBreadcrums: 10
-  BreadcrumSpacing: 0.1
+  MaxBreadcrums: 20
+  BreadcrumSpacing: 0.05
   BreadcrumSpacingSqr: 0
 --- !u!114 &4549430665592794440
 MonoBehaviour:
@@ -495,10 +495,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd61c7f606646c41a9135d1db35f6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TriggerEndAdditionalRadius: 0.4
   Following: {fileID: 0}
   Speed: 5
   Spacing: 0.75
   IsJoiningConga: 1
+  TriggerLogic: {fileID: 0}
 --- !u!114 &3296176286415380464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,4 +513,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 359807bc332923e46933337946cba999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TriggerAdditionalRadius: 1
+  TriggerPickupAdditionalRadius: 1
