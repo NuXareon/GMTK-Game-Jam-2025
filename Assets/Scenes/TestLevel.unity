@@ -4812,14 +4812,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 473293450098102536, guid: 35939c282bba8f7478b00c16a049afc4, type: 3}
-      propertyPath: MaxBreadcrums
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 473293450098102536, guid: 35939c282bba8f7478b00c16a049afc4, type: 3}
-      propertyPath: BreadcrumSpacing
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 3894465973285743347, guid: 35939c282bba8f7478b00c16a049afc4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.56
