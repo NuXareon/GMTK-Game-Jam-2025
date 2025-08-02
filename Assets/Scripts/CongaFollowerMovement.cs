@@ -1,8 +1,4 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
-using static UnityEngine.GraphicsBuffer;
 
 public class CongaFollowerMovement : MonoBehaviour
 {
@@ -10,34 +6,39 @@ public class CongaFollowerMovement : MonoBehaviour
     public Transform Following;
     [HideInInspector]
     public float Speed = 5;
-
+    [HideInInspector]
     public float Spacing = 1f;
+    [HideInInspector]
+    public bool IsJoiningConga = true;
+    [HideInInspector]
+    public Vector3? Target;
 
-    private Vector3? Target;
-    private float TargetSpacingSqr;
+    private Animator Anim;
     private CharacterController Controller;
     private float Gravity = 9.81f;
 
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
+        Anim = GetComponent<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        TargetSpacingSqr = Spacing * Spacing;
-       // Don't Start the movement here, we want to give the breadcrum a chance to initialize itself first
+        // Don't Start the movement here, we want to give the breadcrum a chance to initialize itself first
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!Target.HasValue)
+        if (!Target.HasValue || IsJoiningConga)
         {
             UpdateTargetPosition();
         }
         MoveTowardsTarget();
+
+        UpdateAnimation();
 
         // Apply gravity (tecnically should be an acceleration, but this is enough to keep our conga in the ground)
         Controller.Move(Vector3.down * Gravity * Time.deltaTime);
@@ -50,7 +51,14 @@ public class CongaFollowerMovement : MonoBehaviour
             BreadcrumTrail Trail = Following.GetComponent<BreadcrumTrail>();
             if (Trail != null)
             {
-                Target = Trail.ConsumeBreadcrum();
+                if (IsJoiningConga)
+                {
+                    Target = Trail.GetClosestBreadcrum(transform.position);
+                }
+                else
+                {
+                    Target = Trail.ConsumeBreadcrum();
+                }
             }
             else
             {
@@ -72,13 +80,14 @@ public class CongaFollowerMovement : MonoBehaviour
 
             // Keep distance with the following member
             Vector3 FollowingDirection = Following.transform.position - transform.position;
-            if (FollowingDirection.sqrMagnitude > TargetSpacingSqr)
+            if (FollowingDirection.sqrMagnitude > Spacing * Spacing)
             {
                 // TODO tecnically, instead of clamping movement we should move to the breadcrum and use the remaining movement to go to the next one
                 // Calculate distante to target and move
                 Vector3 TargetDirection = Target.Value - transform.position;
                 TargetDirection.y = 0f;
                 Vector3 TargetMove = TargetDirection.normalized * Speed * Time.deltaTime;
+
                 if (TargetMove.sqrMagnitude > TargetDirection.sqrMagnitude)
                 {
                     Controller.Move(TargetDirection);
@@ -98,8 +107,34 @@ public class CongaFollowerMovement : MonoBehaviour
                 if (NewTargetDirection.sqrMagnitude < 0.1f * 0.1f)
                 {
                     Target = null;
+                    if (IsJoiningConga)
+                    {
+                        IsJoiningConga = false;
+                        GameObject Conga = GameObject.FindGameObjectWithTag("GameController");
+                        Transform Leader = Conga.GetComponent<CongaManager>().GetLeader();
+                        Physics.IgnoreCollision(Leader.GetComponent<CharacterController>(), Controller, false);
+                        BreadcrumTrail Trail = Following.GetComponent<BreadcrumTrail>();
+                        if (Trail != null)
+                        {
+                            Trail.RemoveOldBreadcrums(transform.position);
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    public void UpdateAnimation()
+    {
+        if (Following != null)
+        {
+            Anim.SetBool("JoiningConga", IsJoiningConga);
+            Anim.SetBool("InConga", !IsJoiningConga);
+        }
+        else
+        {
+            Anim.SetBool("JoiningConga", false);
+            Anim.SetBool("InConga", false);
         }
     }
 }

@@ -78,4 +78,37 @@ public class BreadcrumTrail : MonoBehaviour
         Debug.LogWarning("Ran out of breadcrums for member " + transform.name + ". Returning current position.");
         return transform.position;
     }
+
+    public Vector3 GetClosestBreadcrum(Vector3 pos)
+    {
+        if (Breadcrums.Count == 0)
+        {
+            return transform.position;
+        }
+
+        Vector3 ClosestPos = transform.position;
+        foreach (Vector3 BreadcrumPos in Breadcrums)
+        {
+            if ((pos - BreadcrumPos).sqrMagnitude < (pos-ClosestPos).sqrMagnitude)
+            {
+                ClosestPos = BreadcrumPos;
+            }
+        }
+
+        return ClosestPos;
+    }
+
+    public void RemoveOldBreadcrums(Vector3 NewMemberPos)
+    {
+        Vector3 ClosestBreadcrum = GetClosestBreadcrum(NewMemberPos);
+        Vector3 CurrentBreadcrumPos = Breadcrums.Peek();
+        while (CurrentBreadcrumPos != ClosestBreadcrum)
+        {
+            ConsumeBreadcrum();
+            CurrentBreadcrumPos = Breadcrums.Peek();
+        }
+
+        // Remove closest breadcrum too
+        ConsumeBreadcrum();
+    }
 }
