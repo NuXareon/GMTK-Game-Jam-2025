@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AdditionalFollowerSpeed: 1
   FollowerSpacing: 0.9
+  FollowersReleasedOnCollision: 1
   Members:
   - {fileID: 8100024232347490689}
   - {fileID: 3066370855723598622}
@@ -545,10 +546,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd61c7f606646c41a9135d1db35f6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TriggerEndAdditionalRadius: 0.2
   Following: {fileID: 0}
   Speed: 5
   Spacing: 0.75
   IsJoiningConga: 0
+  TriggerLogic: {fileID: 0}
 --- !u!4 &3066370855723598622 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
@@ -1046,10 +1049,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd61c7f606646c41a9135d1db35f6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TriggerEndAdditionalRadius: 0.2
   Following: {fileID: 0}
   Speed: 5
   Spacing: 0.75
   IsJoiningConga: 0
+  TriggerLogic: {fileID: 0}
 --- !u!4 &5714101817295832291 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
@@ -1488,6 +1493,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7163453638609834567}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5280354590189576174}
   m_SourcePrefab: {fileID: 100100000, guid: 3e9c72f9f13f3824fb36678c0d5b6f24, type: 3}
 --- !u!4 &8100024232347490689 stripped
 Transform:
@@ -1553,4 +1561,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 6
-  TurnSpeed: 90
+  TurnSpeed: 180
+  HeadOnCollisionAngle: 30
+  HeadOnCollisionAngleFollower: 45
+  CollisionInvulnerabilityTime: 1.5
+  PostCollisionTime: 0
+--- !u!114 &5280354590189576174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8872867191415931707}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd61c7f606646c41a9135d1db35f6cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TriggerEndAdditionalRadius: 0.2
+  Following: {fileID: 0}
+  Speed: 5
+  Spacing: 1
+  IsJoiningConga: 1
+  TriggerLogic: {fileID: 0}
