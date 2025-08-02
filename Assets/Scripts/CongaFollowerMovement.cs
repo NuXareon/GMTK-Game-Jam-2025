@@ -163,8 +163,11 @@ public class CongaFollowerMovement : MonoBehaviour
     {
         if (Following != null)
         {
-            Anim.SetBool("JoiningConga", IsJoiningConga);
-            Anim.SetBool("InConga", !IsJoiningConga);
+            if (!GetComponent<CongaLeaderMovement>())
+            {
+                Anim.SetBool("JoiningConga", IsJoiningConga);
+                Anim.SetBool("InConga", !IsJoiningConga);
+            }
         }
         else
         {
