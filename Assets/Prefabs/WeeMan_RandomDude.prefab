@@ -480,8 +480,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayBreadcrumDebug: 0
-  MaxBreadcrums: 10
-  BreadcrumSpacing: 0.1
+  MaxBreadcrums: 20
+  BreadcrumSpacing: 0.05
   BreadcrumSpacingSqr: 0
 --- !u!114 &4549430665592794440
 MonoBehaviour:
