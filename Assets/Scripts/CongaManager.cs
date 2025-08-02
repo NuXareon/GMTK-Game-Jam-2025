@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil.Cil;
 using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using static Unity.VisualScripting.Metadata;
 
 public class CongaManager : MonoBehaviour
@@ -22,6 +24,7 @@ public class CongaManager : MonoBehaviour
             Debug.LogError("Minimum size of conga has to be at least 3, current:  " + transform.childCount);
         }
 
+        CharacterController LeaderController = null;
         float? LeaderSpeed = null;
         Transform prevChild = null;
         foreach (Transform child in transform)
@@ -42,6 +45,12 @@ public class CongaManager : MonoBehaviour
                 {
                     Debug.LogError("Failed to assign speed to member: " + child.name);
                 }
+                if (LeaderController != null) 
+                {
+                    // Disable collision with leader for the initial conga. Should only be really needed for the second conga member.
+                    CharacterController myController = child.GetComponent<CharacterController>();
+                    Physics.IgnoreCollision(LeaderController, myController);
+                } 
             }
             else
             {
@@ -49,6 +58,7 @@ public class CongaManager : MonoBehaviour
                 if (ChildLeaderMovement)
                 {
                     LeaderSpeed = ChildLeaderMovement.Speed;
+                    LeaderController = child.GetComponent<CharacterController>();
                 }
             }
             prevChild = child;

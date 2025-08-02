@@ -74,6 +74,7 @@ public class CongaFollowerMovement : MonoBehaviour
             Vector3 FollowingDirection = Following.transform.position - transform.position;
             if (FollowingDirection.sqrMagnitude > TargetSpacingSqr)
             {
+                // TODO tecnically, instead of clamping movement we should move to the breadcrum and use the remaining movement to go to the next one
                 // Calculate distante to target and move
                 Vector3 TargetDirection = Target.Value - transform.position;
                 TargetDirection.y = 0f;
