@@ -192,5 +192,7 @@ public class CongaManager : MonoBehaviour
         LeaderFollowerMovement.Speed = LeaderMovement.Speed/2f;
         LeaderFollowerMovement.Spacing = 0.1f;
         LeaderFollowerMovement.IsJoiningConga = false;
+
+        FindFirstObjectByType<LevelFlow>().FinishLevel();
     }
 }

@@ -1,10 +1,12 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class LevelFlow : MonoBehaviour
 {
     public TextMeshProUGUI InitialCountdown;
+    public TextMeshProUGUI CongaLoop;
     public int CountdownStart = 3;
 
     private int CurrentCountdown;
@@ -15,6 +17,7 @@ public class LevelFlow : MonoBehaviour
     {
         // Freeze all movement until level starts
         InitialCountdown.gameObject.SetActive(false);
+        CongaLoop.gameObject.SetActive(false);
         Time.timeScale = 0f;
         CurrentCountdown = CountdownStart;
         InitialFontSize = InitialCountdown.fontSize;
@@ -45,5 +48,17 @@ public class LevelFlow : MonoBehaviour
         }
         InitialCountdown.gameObject.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void FinishLevel()
+    {
+        CongaLoop.gameObject.SetActive(true);
+        StartCoroutine(LoadNextLevel(3f));
+    }
+
+    IEnumerator LoadNextLevel(float seconds)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
