@@ -6,7 +6,7 @@ public class RandomDudeTriggerLogic : MonoBehaviour
 
     private void Awake()
     {
-        Conga = GameObject.FindGameObjectWithTag("GameController");    
+        Conga = GameObject.FindGameObjectWithTag("GameController");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,7 +31,6 @@ public class RandomDudeTriggerLogic : MonoBehaviour
         if (other.GetComponent<CongaLeaderMovement>())
         {
             // We collided with the leader!
-            Debug.Log(gameObject.transform.parent + " Collided with " + other);
             Conga.GetComponent<CongaManager>().AddMember(gameObject.transform.parent);
         }
     }

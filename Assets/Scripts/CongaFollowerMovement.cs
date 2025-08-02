@@ -1,12 +1,8 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
-using static UnityEngine.GraphicsBuffer;
 
 public class CongaFollowerMovement : MonoBehaviour
 {
-    //[HideInInspector]
+    [HideInInspector]
     public Transform Following;
     [HideInInspector]
     public float Speed = 5;
@@ -14,8 +10,9 @@ public class CongaFollowerMovement : MonoBehaviour
     public float Spacing = 1f;
     [HideInInspector]
     public bool IsJoiningConga = true;
+    [HideInInspector]
+    public Vector3? Target;
 
-    private Vector3? Target;
     private Animator Anim;
     private CharacterController Controller;
     private float Gravity = 9.81f;
@@ -127,7 +124,7 @@ public class CongaFollowerMovement : MonoBehaviour
         }
     }
 
-    void UpdateAnimation()
+    public void UpdateAnimation()
     {
         if (Following != null)
         {

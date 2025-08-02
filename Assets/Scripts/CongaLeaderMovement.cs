@@ -1,22 +1,33 @@
-using System.Diagnostics;
+using Unity.Burst;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class CongaLeaderMovement : MonoBehaviour
 {
     public float Speed = 5f;
     public float TurnSpeed = 360f;
+    public float HeadOnCollisionAngle = 30f;
+    public float HeadOnCollisionAngleFollower = 45f;
+    public float CollisionInvulnerabilityTime = 2f;
 
     private float Gravity = 9.81f;
+    private float CollisionTime = 0f;
+    private float PostCollisionTime = 0f;
 
     private InputSystem_Actions InputActions;
     private CharacterController Controller;
+    private CongaManager Conga;
     private Vector2 PlayerInputDirection;
     private Vector3 MovingDirection;
+    private int LeaderLayer;
+    private int FollowerLayer;
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
         InputActions = new InputSystem_Actions();
+        Conga = GameObject.FindGameObjectWithTag("GameController").GetComponent<CongaManager>();
+
+        LeaderLayer = LayerMask.NameToLayer("CongaLeader");
+        FollowerLayer = LayerMask.NameToLayer("CongaFollower");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,6 +41,26 @@ public class CongaLeaderMovement : MonoBehaviour
 
     void Update()
     {
+        if (CollisionTime > 0f)
+        {
+            // During collision stop movement
+            CollisionTime -= Time.deltaTime;
+            CollisionTime = Mathf.Max(CollisionTime, 0f);
+            return;
+        }
+
+        if (PostCollisionTime > 0f)
+        {
+            PostCollisionTime -= Time.deltaTime;
+            PostCollisionTime = Mathf.Max(PostCollisionTime, 0f);
+
+            if (PostCollisionTime == 0)
+            {
+                // Restore collisions
+                Physics.IgnoreLayerCollision(LeaderLayer, FollowerLayer, false);
+            }
+        }
+
         // Process Player Input
         Vector3 PlayerTargetMovement = new Vector3(PlayerInputDirection.x, 0, PlayerInputDirection.y);
         if (PlayerTargetMovement != Vector3.zero)
@@ -43,7 +74,45 @@ public class CongaLeaderMovement : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(MovingDirection);
 
         // Move Forward
-        Controller.Move(transform.forward * Speed * Time.deltaTime);
+        CollisionFlags flags = Controller.Move(transform.forward * Speed * Time.deltaTime);
+
+        // Detect if the movement hit something
+        if ((flags & CollisionFlags.Sides) != 0 && PostCollisionTime == 0f)
+        {
+            //Debug.Log("Side or front collision detected");
+
+            Vector3 origin = transform.position + Vector3.up * (Controller.height / 2f);
+            Vector3 direction = transform.forward;
+            float RaycastLength = 1.0f;
+            LayerMask collisionLayers = 1 | 1 << FollowerLayer; // Default + Follower
+            Debug.DrawLine(origin, origin + direction * RaycastLength);
+
+            if (Physics.Raycast(origin, direction, out RaycastHit hit, RaycastLength, collisionLayers))
+            {
+                float CollisionAngle = HeadOnCollisionAngle;
+                if (hit.collider.gameObject.GetComponent<CongaFollowerMovement>() != null)
+                {
+                    CollisionAngle = HeadOnCollisionAngleFollower;
+                    // TODO check if it's last. If it is, we win!
+                }
+
+                // Collision - check angle for heads-on collision
+                float angle = Vector3.Angle(transform.forward, -hit.normal);
+                if (angle < CollisionAngle)
+                {
+                    // Play fall animation
+
+                    // Disable collision between leader and followers
+                    Physics.IgnoreLayerCollision(LeaderLayer, FollowerLayer, true);
+
+                    CollisionTime = 1f; // TODO adjust with animation (maybe we can deduce this from the anim time?)
+                    PostCollisionTime = CollisionInvulnerabilityTime;
+
+                    // Last follower is released
+                    Conga.OnCongaCollision(hit);
+                }   
+            }
+        }
 
         // Apply gravity (tecnically should be an acceleration, but this is enough to keep our conga in the ground)
         Controller.Move(Vector3.down * Gravity * Time.deltaTime);

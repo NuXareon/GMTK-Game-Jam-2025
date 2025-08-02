@@ -1,17 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using Mono.Cecil.Cil;
-using NUnit.Framework;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using UnityEngine.InputSystem.XR;
-using static Unity.VisualScripting.Metadata;
 
 public class CongaManager : MonoBehaviour
 {
     public float AdditionalFollowerSpeed = 1.0f;
     public float FollowerSpacing= 1.0f;
+    public int FollowersReleasedOnCollision = 1;
     public List<Transform> Members = new List<Transform>();
 
     private int FollowerCollisionLayer;
@@ -118,8 +114,46 @@ public class CongaManager : MonoBehaviour
         Members.Add(NewMember);
     }
 
+    public void OnCongaCollision(RaycastHit hit)
+    {
+        for (int i = 0; i < FollowersReleasedOnCollision; ++i)
+        {
+            if (Members.Count == 3)
+            {
+                break;
+            }
+            ReleaseLastMember();
+        }
+    }
+
     public Transform GetLeader()
     {
         return Members.First();
+    }
+
+    private void ReleaseLastMember()
+    {
+        Transform CurrentLast = Members.Last();
+
+        RandomDudeBehaviour CurrentLastRandomDudeBehaviour = CurrentLast.GetComponent<RandomDudeBehaviour>();
+        if (CurrentLastRandomDudeBehaviour == null)
+        {
+            Debug.LogError("Trying to remove memember (" + CurrentLast.name + ") to conga without a Random Dude Behaviour.");
+            return;
+        }
+
+        CurrentLast.SetParent(null);
+        CurrentLast.gameObject.layer = RandomDudeCollisionLayer;
+
+        CongaFollowerMovement CurrentLastMemberFollowerMovement = CurrentLast.GetComponent<CongaFollowerMovement>();
+        CurrentLastMemberFollowerMovement.Following = null;
+        CurrentLastMemberFollowerMovement.Target = null;
+        CurrentLastMemberFollowerMovement.IsJoiningConga = true;
+        CurrentLastMemberFollowerMovement.UpdateAnimation();
+        CurrentLastMemberFollowerMovement.enabled = false;
+
+        CurrentLastRandomDudeBehaviour.enabled = true;
+
+        Members.Remove(CurrentLast);
     }
 }

@@ -20,6 +20,7 @@ public class RandomDudeBehaviour : MonoBehaviour
         triggerObj.transform.SetParent(transform);
         triggerObj.transform.localPosition = Vector3.zero;
         triggerObj.transform.localRotation = Quaternion.identity;
+        triggerObj.layer = gameObject.layer;
 
         CharacterController controller = GetComponent<CharacterController>();
         CapsuleCollider capsule = triggerObj.AddComponent<CapsuleCollider>();
@@ -48,7 +49,7 @@ public class RandomDudeBehaviour : MonoBehaviour
         
     }
 
-    private void OnEnabled()
+    private void OnEnable()
     {
         TriggerLogic.enabled = true;
     }
