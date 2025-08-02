@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 public class BreadcrumTrail : MonoBehaviour
 {
+    public bool DisplayBreadcrumDebug = false;
     public int MaxBreadcrums = 5;
     public float BreadcrumSpacing = 1.0f;
 
@@ -31,20 +32,33 @@ public class BreadcrumTrail : MonoBehaviour
             float DistanceSqr = (LastBreadcrum.Value - transform.position).sqrMagnitude;
             if (DistanceSqr >= BreadcrumSpacingSqr)
             {
-                if (Breadcrums.Count < MaxBreadcrums)
+                if (Breadcrums.Count >= MaxBreadcrums)
                 {
-                    DropBreadcrum();
+                    ConsumeBreadcrum();
                 }
-                else
-                {
-                    Debug.LogWarning("Exceeded the maximum number of breadcrums (" + MaxBreadcrums + ") for member " + transform.name);
-                }
+                DropBreadcrum();
             }
         }
         else
         {
-            Debug.LogWarning("Ran out of breadcrums for member " + transform.name + ". Dropping new breadcrum.");
+            //Debug.LogWarning("Ran out of breadcrums for member " + transform.name + ". Dropping new breadcrum.");
             DropBreadcrum();
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!DisplayBreadcrumDebug)
+        {
+            return;
+        }
+
+        Gizmos.color = Color.yellow;
+
+        foreach (var pos in Breadcrums)
+        {
+            Gizmos.DrawSphere(pos, BreadcrumSpacing/2f);
+            //UnityEditor.Handles.Label(pos + Vector3.up * 0.3f, pos.ToString());
         }
     }
 

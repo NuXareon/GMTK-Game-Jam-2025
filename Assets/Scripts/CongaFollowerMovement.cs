@@ -11,8 +11,10 @@ public class CongaFollowerMovement : MonoBehaviour
     [HideInInspector]
     public float Speed = 5;
 
+    public float Spacing = 1f;
+
     private Vector3? Target;
-    private float? TargetSpacingSqr;
+    private float TargetSpacingSqr;
     private CharacterController Controller;
     private float Gravity = 9.81f;
 
@@ -24,6 +26,7 @@ public class CongaFollowerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        TargetSpacingSqr = Spacing * Spacing;
        // Don't Start the movement here, we want to give the breadcrum a chance to initialize itself first
     }
 
@@ -48,7 +51,6 @@ public class CongaFollowerMovement : MonoBehaviour
             if (Trail != null)
             {
                 Target = Trail.ConsumeBreadcrum();
-                TargetSpacingSqr = Trail.BreadcrumSpacingSqr;
             }
             else
             {
@@ -66,16 +68,6 @@ public class CongaFollowerMovement : MonoBehaviour
             {
                 Debug.LogError("Member (" + transform.name + ") trying to move towards target but following is null");
                 Target = null;
-            }
-
-            float Spacing = 1f;
-            if (TargetSpacingSqr.HasValue)
-            {
-                Spacing = TargetSpacingSqr.Value;
-            }
-            else
-            {
-                Debug.LogWarning("Invalid spacing found for follower " + transform.name);
             }
 
             // Keep distance with the following member

@@ -191,8 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea19070f9f3fefd47a5dc55a38974e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxBreadcrums: 20
-  BreadcrumSpacing: 0.5
+  DisplayBreadcrumDebug: 0
+  MaxBreadcrums: 5
+  BreadcrumSpacing: 0.1
   BreadcrumSpacingSqr: 0
 --- !u!1001 &8113402730583389747
 PrefabInstance:
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Following: {fileID: 0}
   Speed: 5
+  Spacing: 0.5
 --- !u!114 &344283577653996476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,8 +310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea19070f9f3fefd47a5dc55a38974e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxBreadcrums: 20
-  BreadcrumSpacing: 0.5
+  DisplayBreadcrumDebug: 0
+  MaxBreadcrums: 5
+  BreadcrumSpacing: 0.1
   BreadcrumSpacingSqr: 0
 --- !u!143 &6145269231167839246
 CharacterController:
@@ -433,6 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Following: {fileID: 0}
   Speed: 5
+  Spacing: 0.5
 --- !u!114 &5680685352494399263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,8 +449,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea19070f9f3fefd47a5dc55a38974e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxBreadcrums: 20
-  BreadcrumSpacing: 0.5
+  DisplayBreadcrumDebug: 0
+  MaxBreadcrums: 5
+  BreadcrumSpacing: 0.1
   BreadcrumSpacingSqr: 0
 --- !u!143 &808202692109385652
 CharacterController:

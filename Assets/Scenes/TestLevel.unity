@@ -602,9 +602,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 344283577653996476, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: MaxBreadcrums
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 344283577653996476, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: BreadcrumSpacing
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 344283577653996476, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: DisplayBreadcrumDebug
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1029547453414077334, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
       propertyPath: m_Name
       value: Conga
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918780467353077160, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: MaxBreadcrums
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918780467353077160, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: BreadcrumSpacing
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918780467353077160, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: DisplayBreadcrumDebug
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5255583954994135981, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: Speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5255583954994135981, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: TurnSpeed
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5276202458163280433, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: Spacing
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680685352494399263, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: MaxBreadcrums
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680685352494399263, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: BreadcrumSpacing
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680685352494399263, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: DisplayBreadcrumDebug
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5696831682969329712, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -645,6 +693,10 @@ PrefabInstance:
     - target: {fileID: 5696831682969329712, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709956442635864946, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
+      propertyPath: Spacing
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
