@@ -55,12 +55,7 @@ public class CongaLeaderMovement : MonoBehaviour
 
         if (PostCollisionTime > 0f)
         {
-            //Color color = Mat.color;
-            //color.a = 0.3f; // Translucent
-            foreach (Material mat in Mat)
-            {
-                mat.color = Color.darkRed;
-            }
+            Conga.SetCongaColor(Color.darkRed);
 
             PostCollisionTime -= Time.deltaTime;
             PostCollisionTime = Mathf.Max(PostCollisionTime, 0f);
@@ -69,11 +64,7 @@ public class CongaLeaderMovement : MonoBehaviour
             {
                 // Restore collisions
                 Physics.IgnoreLayerCollision(LeaderLayer, FollowerLayer, false);
-
-                foreach (Material mat in Mat)
-                {
-                    mat.color = Color.white;
-                }
+                Conga.SetCongaColor(Color.white);
             }
         }
 

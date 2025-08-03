@@ -246,4 +246,16 @@ public class CongaManager : MonoBehaviour
             ChildFollowerMovement.Anim.SetBool("Dance", false);
         }
     }
+
+    public void SetCongaColor(Color color)
+    {
+        foreach (Transform child in Members)
+        {
+            Material[] mats = child.GetComponentInChildren<SkinnedMeshRenderer>().materials;
+            foreach (Material mat in mats)
+            {
+                mat.color = color;
+            }
+        }
+    }
 }
