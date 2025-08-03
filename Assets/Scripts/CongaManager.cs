@@ -194,6 +194,16 @@ public class CongaManager : MonoBehaviour
         LeaderFollowerMovement.Spacing = 0.1f;
         LeaderFollowerMovement.IsJoiningConga = false;
 
+        CongaFollowerMovement[] AllFollowers = FindObjectsByType<CongaFollowerMovement>(FindObjectsSortMode.None);
+        foreach (CongaFollowerMovement ChildFollowerMovement in AllFollowers)
+        {
+            if (ChildFollowerMovement.gameObject.GetComponent<CongaLeaderMovement>())
+            {
+                continue;
+            }
+            ChildFollowerMovement.Anim.SetBool("Dance", true);
+        }
+
         FindFirstObjectByType<LevelFlow>().FinishLevel();
     }
 

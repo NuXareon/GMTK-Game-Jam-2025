@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 
 public class MusicManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class MusicManager : MonoBehaviour
     public AudioSource ExtremeMusicSource;
     public float ExtremeMusicPeriod = 20f;
     public float ExtremeMusicDuration = 10f;
+    public List<AudioSource> CongaAudio;
     private CongaManager Conga;
 
     private void Awake()
@@ -67,5 +69,6 @@ public class MusicManager : MonoBehaviour
     {
         StopAllCoroutines();
         Text.gameObject.SetActive(false);
+        CongaAudio[Random.Range(0, CongaAudio.Count)].Play();
     }
 }
