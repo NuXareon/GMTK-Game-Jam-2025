@@ -11,6 +11,7 @@ public class CongaManager : MonoBehaviour
     public int FollowersReleasedOnCollision = 1;
     public List<Transform> Members = new List<Transform>();
     public float ExtremeModeModifier = 2f;
+    public AudioSource CollectAudio;
 
     private int FollowerCollisionLayer;
     private int RandomDudeCollisionLayer;
@@ -124,6 +125,8 @@ public class CongaManager : MonoBehaviour
         Physics.IgnoreCollision(Leader.GetComponent<CharacterController>(), NewMember.GetComponent<CharacterController>());
 
         Members.Add(NewMember);
+
+        CollectAudio.Play();
     }
 
     public void OnCongaCollision(RaycastHit hit)

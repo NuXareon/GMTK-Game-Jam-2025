@@ -9,6 +9,8 @@ public class CongaLeaderMovement : MonoBehaviour
     public float HeadOnCollisionAngleFollower = 45f;
     public float CollisionInvulnerabilityTime = 2f;
 
+    public AudioSource CollisionAudio;
+
     [HideInInspector]
     public float PostCollisionTime = 0f;
 
@@ -115,6 +117,8 @@ public class CongaLeaderMovement : MonoBehaviour
 
                     // Last follower is released
                     Conga.OnCongaCollision(hit);
+
+                    CollisionAudio.Play();
                 }   
             }
         }

@@ -4840,9 +4840,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5932682537919084545, guid: 08ac4fc5d7df7934492cbecdc2ec57f0, type: 3}
+      propertyPath: m_Volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6262112018941196929, guid: 08ac4fc5d7df7934492cbecdc2ec57f0, type: 3}
       propertyPath: m_Name
       value: LevelHandler
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279434942686442578, guid: 08ac4fc5d7df7934492cbecdc2ec57f0, type: 3}
+      propertyPath: m_Volume
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
