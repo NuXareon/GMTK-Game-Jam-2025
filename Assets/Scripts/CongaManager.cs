@@ -199,41 +199,40 @@ public class CongaManager : MonoBehaviour
 
     public void EnterExtremeMode()
     {
-        float ExtremeLeaderSpeed = LeaderSpeed.Value;
-        foreach (Transform child in transform)
+        CongaLeaderMovement LeaderMovement = GetLeader().GetComponent<CongaLeaderMovement>();
+        LeaderMovement.Speed = LeaderSpeed.Value * ExtremeModeModifier;
+        float ExtremeLeaderSpeed = LeaderMovement.Speed;
+        GetLeader().GetComponent<Animator>().speed = 3f;
+
+        CongaFollowerMovement[] AllFollowers = FindObjectsByType<CongaFollowerMovement>(FindObjectsSortMode.None);
+        foreach (CongaFollowerMovement ChildFollowerMovement in AllFollowers)
         {
-            CongaLeaderMovement ChildLeaderMovement = child.GetComponent<CongaLeaderMovement>();
-            CongaFollowerMovement ChildFollowerMovement = child.GetComponent<CongaFollowerMovement>();
-            if (ChildLeaderMovement)
+            if (ChildFollowerMovement.gameObject.GetComponent<CongaLeaderMovement>())
             {
-                ChildLeaderMovement.Speed = LeaderSpeed.Value * ExtremeModeModifier;
-                ExtremeLeaderSpeed = ChildLeaderMovement.Speed;
-                child.GetComponent<Animator>().speed = 3f;
+                continue;
             }
-            else if (ChildFollowerMovement)
-            {
-                ChildFollowerMovement.Speed = ExtremeLeaderSpeed + AdditionalFollowerSpeed;
-                ChildFollowerMovement.Anim.speed = 3f;
-            }
+            ChildFollowerMovement.Speed = ExtremeLeaderSpeed + AdditionalFollowerSpeed;
+            ChildFollowerMovement.Anim.speed = 3f;
+            ChildFollowerMovement.Anim.SetBool("Dance", true);
         }
     }
 
     public void ExitExtremeMode()
     {
-        foreach (Transform child in transform)
+        CongaLeaderMovement LeaderMovement = GetLeader().GetComponent<CongaLeaderMovement>();
+        LeaderMovement.Speed = LeaderSpeed.Value;
+        GetLeader().GetComponent<Animator>().speed = 1f;
+
+        CongaFollowerMovement[] AllFollowers = FindObjectsByType<CongaFollowerMovement>(FindObjectsSortMode.None);
+        foreach (CongaFollowerMovement ChildFollowerMovement in AllFollowers)
         {
-            CongaLeaderMovement ChildLeaderMovement = child.GetComponent<CongaLeaderMovement>();
-            CongaFollowerMovement ChildFollowerMovement = child.GetComponent<CongaFollowerMovement>();
-            if (ChildLeaderMovement)
+            if (ChildFollowerMovement.gameObject.GetComponent<CongaLeaderMovement>())
             {
-                ChildLeaderMovement.Speed = LeaderSpeed.Value;
-                child.GetComponent<Animator>().speed = 1f;
+                continue;
             }
-            else if (ChildFollowerMovement)
-            {
-                ChildFollowerMovement.Speed = LeaderSpeed.Value + AdditionalFollowerSpeed;
-                ChildFollowerMovement.Anim.speed = 1f;
-            }
+            ChildFollowerMovement.Speed = LeaderSpeed.Value + AdditionalFollowerSpeed;
+            ChildFollowerMovement.Anim.speed = 1f;
+            ChildFollowerMovement.Anim.SetBool("Dance", false);
         }
     }
 }
