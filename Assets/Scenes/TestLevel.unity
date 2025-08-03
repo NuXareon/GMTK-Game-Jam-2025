@@ -4861,10 +4861,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Conga
       objectReference: {fileID: 0}
-    - target: {fileID: 5433250835618773472, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
-      propertyPath: ExtremeModeModifier
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5696831682969329712, guid: 012781d7fb9be90468fb1fdbc416569a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
