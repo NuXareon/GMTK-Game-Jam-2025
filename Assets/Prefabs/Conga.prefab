@@ -55,6 +55,7 @@ MonoBehaviour:
   - {fileID: 8100024232347490689}
   - {fileID: 3066370855723598622}
   - {fileID: 5714101817295832291}
+  MemberColor: []
   ExtremeModeModifier: 1.5
   CollectAudio: {fileID: 7995522788523629792}
 --- !u!82 &7995522788523629792
@@ -1150,7 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd61c7f606646c41a9135d1db35f6cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TriggerEndAdditionalRadius: 0.2
+  TriggerEndAdditionalRadius: 0.3
   Following: {fileID: 0}
   Speed: 5
   Spacing: 0.75
