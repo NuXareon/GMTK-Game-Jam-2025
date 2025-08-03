@@ -72,7 +72,8 @@ public class CongaManager : MonoBehaviour
         }
 
         Members.First().GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = false;
-        Members.Last().GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = true;
+        // Prevent winning with only the initial conga to avoid initialization edge cases
+        //Members.Last().GetComponent<CongaFollowerMovement>().TriggerLogic.enabled = true;
     }
 
     // Update is called once per frame
