@@ -54,6 +54,7 @@ public class LevelFlow : MonoBehaviour
     {
         CongaLoop.gameObject.SetActive(true);
         StartCoroutine(LoadNextLevel(3f));
+        GetComponent<MusicManager>().OnFinishLevel();
     }
 
     IEnumerator LoadNextLevel(float seconds)

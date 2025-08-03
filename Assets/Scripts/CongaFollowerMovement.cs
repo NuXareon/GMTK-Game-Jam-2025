@@ -17,8 +17,9 @@ public class CongaFollowerMovement : MonoBehaviour
     public Vector3? Target;
     [HideInInspector]
     public FollowerTriggerLogic TriggerLogic;
+    [HideInInspector]
+    public Animator Anim;
 
-    private Animator Anim;
     private CharacterController Controller;
     private float Gravity = 9.81f;
     void Awake()

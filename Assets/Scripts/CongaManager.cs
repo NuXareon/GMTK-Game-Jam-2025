@@ -10,9 +10,11 @@ public class CongaManager : MonoBehaviour
     public float FollowerSpacing = 1.0f;
     public int FollowersReleasedOnCollision = 1;
     public List<Transform> Members = new List<Transform>();
+    public float ExtremeModeModifier = 2f;
 
     private int FollowerCollisionLayer;
     private int RandomDudeCollisionLayer;
+    private float? LeaderSpeed = null;
 
     void Awake()
     {
@@ -30,7 +32,6 @@ public class CongaManager : MonoBehaviour
         }
 
         CharacterController LeaderController = null;
-        float? LeaderSpeed = null;
         Transform prevChild = null;
         foreach (Transform child in transform)
         {
@@ -184,9 +185,9 @@ public class CongaManager : MonoBehaviour
             // Mo winning while invulnerable
             return;
         }
-        // TODO proper game end
+
         Debug.Log("Conga Loop!");
-        AddMember(GetLeader());
+        AddMember(Leader);
         CongaFollowerMovement LeaderFollowerMovement = Leader.GetComponent<CongaFollowerMovement>();
         // Do a bit of conga
         LeaderFollowerMovement.Speed = LeaderMovement.Speed/2f;
@@ -194,5 +195,45 @@ public class CongaManager : MonoBehaviour
         LeaderFollowerMovement.IsJoiningConga = false;
 
         FindFirstObjectByType<LevelFlow>().FinishLevel();
+    }
+
+    public void EnterExtremeMode()
+    {
+        float ExtremeLeaderSpeed = LeaderSpeed.Value;
+        foreach (Transform child in transform)
+        {
+            CongaLeaderMovement ChildLeaderMovement = child.GetComponent<CongaLeaderMovement>();
+            CongaFollowerMovement ChildFollowerMovement = child.GetComponent<CongaFollowerMovement>();
+            if (ChildLeaderMovement)
+            {
+                ChildLeaderMovement.Speed = LeaderSpeed.Value * ExtremeModeModifier;
+                ExtremeLeaderSpeed = ChildLeaderMovement.Speed;
+                child.GetComponent<Animator>().speed = 3f;
+            }
+            else if (ChildFollowerMovement)
+            {
+                ChildFollowerMovement.Speed = ExtremeLeaderSpeed + AdditionalFollowerSpeed;
+                ChildFollowerMovement.Anim.speed = 3f;
+            }
+        }
+    }
+
+    public void ExitExtremeMode()
+    {
+        foreach (Transform child in transform)
+        {
+            CongaLeaderMovement ChildLeaderMovement = child.GetComponent<CongaLeaderMovement>();
+            CongaFollowerMovement ChildFollowerMovement = child.GetComponent<CongaFollowerMovement>();
+            if (ChildLeaderMovement)
+            {
+                ChildLeaderMovement.Speed = LeaderSpeed.Value;
+                child.GetComponent<Animator>().speed = 1f;
+            }
+            else if (ChildFollowerMovement)
+            {
+                ChildFollowerMovement.Speed = LeaderSpeed.Value + AdditionalFollowerSpeed;
+                ChildFollowerMovement.Anim.speed = 1f;
+            }
+        }
     }
 }
