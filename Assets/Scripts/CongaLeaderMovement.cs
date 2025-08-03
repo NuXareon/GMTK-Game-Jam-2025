@@ -66,7 +66,7 @@ public class CongaLeaderMovement : MonoBehaviour
             {
                 // Restore collisions
                 Physics.IgnoreLayerCollision(LeaderLayer, FollowerLayer, false);
-                Conga.SetCongaColor(Color.white);
+                Conga.RestoreCongaColor();
             }
         }
 
