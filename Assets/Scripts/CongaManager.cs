@@ -169,6 +169,7 @@ public class CongaManager : MonoBehaviour
         CurrentLastMemberFollowerMovement.Target = null;
         CurrentLastMemberFollowerMovement.IsJoiningConga = true;
         CurrentLastMemberFollowerMovement.UpdateAnimation();
+        CurrentLastMemberFollowerMovement.Anim.SetTrigger("Fall");
         CurrentLastMemberFollowerMovement.enabled = false;
 
         CurrentLastRandomDudeBehaviour.enabled = true;

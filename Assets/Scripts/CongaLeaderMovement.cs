@@ -22,11 +22,13 @@ public class CongaLeaderMovement : MonoBehaviour
     private Vector3 MovingDirection;
     private int LeaderLayer;
     private int FollowerLayer;
+    private Material[] Mat;
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
         InputActions = new InputSystem_Actions();
         Conga = GameObject.FindGameObjectWithTag("GameController").GetComponent<CongaManager>();
+        Mat = GetComponentInChildren<SkinnedMeshRenderer>().materials;
 
         LeaderLayer = LayerMask.NameToLayer("CongaLeader");
         FollowerLayer = LayerMask.NameToLayer("CongaFollower");
@@ -53,6 +55,13 @@ public class CongaLeaderMovement : MonoBehaviour
 
         if (PostCollisionTime > 0f)
         {
+            //Color color = Mat.color;
+            //color.a = 0.3f; // Translucent
+            foreach (Material mat in Mat)
+            {
+                mat.color = Color.darkRed;
+            }
+
             PostCollisionTime -= Time.deltaTime;
             PostCollisionTime = Mathf.Max(PostCollisionTime, 0f);
 
@@ -60,6 +69,11 @@ public class CongaLeaderMovement : MonoBehaviour
             {
                 // Restore collisions
                 Physics.IgnoreLayerCollision(LeaderLayer, FollowerLayer, false);
+
+                foreach (Material mat in Mat)
+                {
+                    mat.color = Color.white;
+                }
             }
         }
 
@@ -100,11 +114,12 @@ public class CongaLeaderMovement : MonoBehaviour
                 if (angle < CollisionAngle)
                 {
                     // Play fall animation
+                    GetComponent<Animator>().SetTrigger("Fall");
 
                     // Disable collision between leader and followers
                     Physics.IgnoreLayerCollision(LeaderLayer, FollowerLayer, true);
 
-                    CollisionTime = 1f; // TODO adjust with animation (maybe we can deduce this from the anim time?)
+                    CollisionTime = 1f;
                     PostCollisionTime = CollisionInvulnerabilityTime;
 
                     // Last follower is released
