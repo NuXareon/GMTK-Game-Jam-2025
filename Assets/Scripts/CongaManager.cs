@@ -10,6 +10,7 @@ public class CongaManager : MonoBehaviour
     public float FollowerSpacing = 1.0f;
     public int FollowersReleasedOnCollision = 1;
     public List<Transform> Members = new List<Transform>();
+    public List<Color> MemberColor = new List<Color>();
     public float ExtremeModeModifier = 2f;
     public AudioSource CollectAudio;
 
@@ -253,13 +254,38 @@ public class CongaManager : MonoBehaviour
 
     public void SetCongaColor(Color color)
     {
+        if (MemberColor.Count > 0)
+        {
+            // We already set the color of the conga, need to restore first
+            return;
+        }
         foreach (Transform child in Members)
         {
+            Color OriginalColor = color;
             Material[] mats = child.GetComponentInChildren<SkinnedMeshRenderer>().materials;
             foreach (Material mat in mats)
             {
+                OriginalColor = mat.color;
                 mat.color = color;
             }
+            MemberColor.Add(OriginalColor);
         }
+    }
+
+    public void RestoreCongaColor()
+    {
+        for (int i = 0; i < Members.Count(); ++i) 
+        {
+            Material[] mats = Members[i].GetComponentInChildren<SkinnedMeshRenderer>().materials;
+            foreach (Material mat in mats)
+            {
+                // This can happen if we picked up a new member. don't change their colors
+                if (i < MemberColor.Count)
+                {
+                    mat.color = MemberColor[i];
+                }
+            }
+        }
+        MemberColor.Clear();
     }
 }
