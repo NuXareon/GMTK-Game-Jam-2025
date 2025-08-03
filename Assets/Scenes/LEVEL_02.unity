@@ -69673,6 +69673,7 @@ Transform:
   - {fileID: 1725179865}
   - {fileID: 1793639460}
   - {fileID: 1344952366}
+  - {fileID: 1795026454}
   - {fileID: 6484211}
   - {fileID: 1914152549}
   - {fileID: 663522316}
@@ -176550,6 +176551,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794480390}
   m_Mesh: {fileID: -1821892634128329563, guid: e28308bcdd7692b4d9a7fdccc3ac83ee, type: 3}
+--- !u!1 &1795026453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1795026454}
+  - component: {fileID: 1795026455}
+  m_Layer: 0
+  m_Name: LakeCollision (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1795026454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795026453}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.6375786, y: -0.30576706, z: -0.3057669, w: -0.6375787}
+  m_LocalPosition: {x: 29.11, y: -0.14, z: 3.25}
+  m_LocalScale: {x: 5.180581, y: 1.5306224, z: 8.6350155}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 690656276}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 51.242}
+--- !u!65 &1795026455
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795026453}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1796659440
 GameObject:
   m_ObjectHideFlags: 0
